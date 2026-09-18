@@ -20,7 +20,7 @@ Nobody should have to adopt an entire ecosystem to benefit from one good tool.
 **Status: planning and initial development.** This README describes the vision,
 not a catalog of shipped features. The first implementation priority is durable
 agent memory and a working Apmatia experience that uses it. There is no released
-Sidecaravan CLI to install yet. The planned command name is `scv).
+Sidecaravan CLI to install yet. The planned command name is `scv`.
 
 ## Give the agent a better starting point
 
