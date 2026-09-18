@@ -19,7 +19,7 @@ Nobody should have to adopt an entire ecosystem to benefit from one good tool.
 
 **Status: planning and initial development.** This README describes the vision,
 not a catalog of shipped features. The first implementation priority is durable
-agent memory and a working Apmatia experience that uses it. There is no released
+agent memory that can be used across compatible assistants. There is no released
 Sidecaravan CLI to install yet. The planned command name is `scv`.
 
 ## Give the agent a better starting point
@@ -39,8 +39,8 @@ provided for decades instead of repeatedly improvising them?
 
 Sidecaravan is an invitation to find out.
 
-The project inherits the curiosity of Cognitive Front End: an archaeological
-dig through techniques developed when processors were slow, memory was scarce,
+Part of that work is an archaeological dig through techniques developed when
+processors were slow, memory was scarce,
 and a few hundred milliseconds could make an approach commercially impractical.
 Some ideas failed. Some were useful but unfashionable. Some were held back by
 the hardware available to their authors.
@@ -59,13 +59,11 @@ together, approaches that failed, unfinished work, and the context behind a
 successful fix. You should be able to inspect those memories, correct them,
 and ask for them to be forgotten.
 
-Imagine telling Luna why an Ansible role needs a particular exception. Tomorrow,
-you return in a new conversation. She recalls the decision, knows where it came
-from, and helps you continue without making you explain the whole project again.
+Imagine explaining to an assistant why a project needs a particular exception.
+Tomorrow, you return in a new conversation. The assistant retrieves the decision
+and its source, helping you continue without explaining the whole project again.
 
-That is our first concrete goal: **Apmatia agents with working memory.**
-Apmatia supplies the character and relationship; Sidecaravan supplies reusable
-memory capabilities that other agents can use too.
+That is our first concrete goal: **reusable memory for the agents you choose.**
 
 Useful memory needs more than storage:
 
@@ -145,9 +143,9 @@ contains the evidence needed for the task.
 Make useful operations available across agents without copying an application's
 business logic into every assistant.
 
-An agent might consult OpenIPE for unfinished habits, ask for a Ladcemas alarm,
-or use a repository-analysis capability. Those applications remain useful
-independently. Users choose which capabilities are available in each context.
+An agent might consult a task manager for unfinished work, schedule a reminder,
+or inspect a repository. The applications providing those operations remain
+useful independently. Users choose which capabilities are available in each context.
 
 These domains describe the intended reach of Sidecaravan. They do not require
 one giant installation, one agent personality, or one mandatory workflow.
@@ -209,8 +207,8 @@ If ten seconds of analysis improves a generation that takes forty minutes,
 spend the ten seconds. If a minute of retrieval prevents a large model from
 pursuing the wrong task, that can be a good trade.
 
-Interactive conversation has a different budget. Luna should not take a minute
-to prepare a greeting. The useful amount of supporting computation depends on
+Interactive conversation has a different budget. An assistant should not take
+a minute to prepare a greeting. The useful amount of supporting computation depends on
 the task, the available hardware, and the user's latency expectations.
 
 The aim is better completed work for the time and resources spent.
@@ -489,8 +487,8 @@ We want to search old papers and systems for phrases such as:
 - *limited by available memory*
 
 An algorithm rejected in 1994 because it needed 800 milliseconds or too much
-of a 64 MB workstation may be trivial on a modern 56-thread server with 576 GB
-of RAM. The unfashionable and formerly impractical ideas may be more interesting
+of a 64 MB workstation may be practical on modern multicore hardware with
+far more memory. The unfashionable and formerly impractical ideas may be more interesting
 than the famous survivors.
 
 ## Help the system choose appropriate resources
@@ -536,7 +534,7 @@ care whether a person finds the result helpful.
 Start with straightforward baselines. More sophisticated machinery earns its
 place by outperforming them on actual work.
 
-## Principles worth carrying forward
+## Design principles
 
 - Preserve original requests and source material; make derived interpretations
   distinguishable.
@@ -548,24 +546,24 @@ place by outperforming them on actual work.
   may use inference; that does not make every other operation depend on it.
 - Keep memories scoped, inspectable, correctable, and forgettable.
 - Respect the user's choice of agent, client, provider, and applications.
-- Make useful capabilities independently accessible. Using Sidecaravan should
-  not require Apmatia or all of OpAIStackOS.
+- Make useful capabilities independently accessible. Users should be able to
+  adopt one capability without adopting a particular agent or an entire stack.
 - Keep experimental techniques measurable and replaceable.
 - Ship small, complete experiences before expanding the toolbox.
 
 ## Where we begin
 
-The first experience we want to make real is personal and practical:
+The first experience we want to make real is useful across assistants:
 
-1. Create an Apmatia agent with a personality and a configured model.
+1. Connect a compatible assistant to Sidecaravan's memory capabilities.
 2. Tell that agent something worth remembering.
 3. Return in a new conversation.
 4. Have it retrieve the relevant memory and continue with you.
 5. Inspect, correct, or forget that memory when needed.
 
-The same memory capability should work for an agent without an Apmatia
-personality. Some people want a familiar companion; some want a dependable
-utility. Both deserve useful continuity.
+The same memory capability should support different assistants and workflows.
+Some people want a familiar companion; some want a dependable utility.
+Both deserve useful continuity.
 
 That first experience does not depend on completing the research catalog.
 Vision, documents, knowledge, SWE, and richer evidence preparation can grow
@@ -574,21 +572,6 @@ through their own concrete, testable contributions.
 Follow the [Sidecaravan roadmap](https://github.com/azwarners/Sidecaravan/issues/1),
 starting with [durable memory](https://github.com/azwarners/Sidecaravan/issues/4)
 and [cross-session recall](https://github.com/azwarners/Sidecaravan/issues/5).
-The [Apmatia plan](https://github.com/azwarners/Apmatia/issues/1) tracks the
-character experience alongside that work.
-
-## From Cognitive Front End to Sidecaravan
-
-Cognitive Front End was an early expression of this project's central idea:
-give agents better evidence and useful conventional computation so they waste
-less inference.
-
-Sidecaravan carries that vision forward and broadens it to memory, vision,
-documents, knowledge, engineering operations, and application capabilities.
-This README preserves that ambition so the predecessor can remain historical.
-
-Sidecaravan starts fresh. It does not depend on the CFE prototype or inherit
-its architecture, milestones, or claims of implemented functionality.
 
 ## The bet
 
