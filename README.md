@@ -1,5 +1,20 @@
 # Sidecaravan
 
+## Installation and implemented-feature status
+
+**There is no installable Sidecaravan release or working `scv` CLI yet.** This repository currently provides a design and research plan, not the memory, retrieval, document, vision, knowledge, or code-analysis services described below. Those capabilities are goals and research directions.
+
+To read or contribute to the design:
+
+```sh
+git clone https://github.com/azwarners/Sidecaravan.git
+cd Sidecaravan
+cat README.md
+```
+
+The intended first milestone is durable, reusable agent memory with explicit retrieval and correction. Until implementation lands, applications should not assume Sidecaravan exposes usable tools or APIs.
+
+
 > **Give agents more to work with—and less they have to figure out from scratch.**
 >
 > Remember useful experience. Find better evidence. Put conventional computation
