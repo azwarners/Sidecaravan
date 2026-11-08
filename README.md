@@ -2,7 +2,9 @@
 
 ## Installation and implemented-feature status
 
-**There is no installable Sidecaravan release or working `scv` CLI yet.** This repository currently provides a design and research plan, not the memory, retrieval, document, vision, knowledge, or code-analysis services described below. Those capabilities are goals and research directions.
+Sidecaravan now includes its first runnable feature: a local shared team-memory
+CLI backed by Memkeeper. The remaining capabilities described below are still
+goals and research directions.
 
 To read or contribute to the design:
 
@@ -11,6 +13,54 @@ git clone https://github.com/azwarners/Sidecaravan.git
 cd Sidecaravan
 cat README.md
 ```
+
+### Local team memory
+
+Requirements: Python 3.11+ and the pinned Memkeeper v0.5.3 binary. Memkeeper
+is dual-licensed MIT/Apache-2.0. Install it from its tagged release, verify the
+release checksum, and make `memkeeper` available on `PATH`.
+
+From a checkout, install Sidecaravan in an isolated environment:
+
+```sh
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install .
+```
+
+Initialize the durable team store. Initialization is safe to repeat; it prints
+the team token once per invocation, so pass it to other authorized callers as
+`SCV_TOKEN` and do not commit it:
+
+```sh
+scv init
+export SCV_TOKEN='token-printed-by-init'
+scv save 'Rollback after five minutes above 2% errors' --kind decision --source incident-42 --author nick
+scv search 'rollback errors' --limit 5
+scv read MEMORY_ID
+scv correct MEMORY_ID 'Rollback after five minutes above 1% errors' --author nick
+scv forget MEMORY_ID --reason 'policy retired'
+```
+
+Set `SCV_DATA_DIR` to share a different local team location. The access token
+is stored with mode 0600, and every read or mutation through `scv` requires it;
+the underlying Memkeeper binary is not an authorization boundary by itself.
+Memkeeper tombstones forgotten memories and keeps supersession history, so
+search does not present them as current.
+
+Back up and restore the SQLite store with the adapter (restore refuses to
+overwrite an existing store unless `--force` is explicit):
+
+```sh
+scv backup ./team.sqlite.backup
+scv restore ./team.sqlite.backup --force
+python -m pytest
+```
+
+The adapter uses Memkeeper's lexical retrieval by default and has no LLM,
+embedding service, or additional database dependency. Concurrent writers have
+not been certified for this milestone; use one writer at a time until that
+behavior is tested.
 
 The intended first milestone is durable, reusable agent memory with explicit retrieval and correction. Until implementation lands, applications should not assume Sidecaravan exposes usable tools or APIs.
 

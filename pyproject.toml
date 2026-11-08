@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sidecaravan"
+version = "0.1.0"
+description = "A local, shared agent-team memory CLI backed by Memkeeper"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+scv = "scv.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
