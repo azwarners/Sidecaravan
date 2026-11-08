@@ -16,9 +16,11 @@ cat README.md
 
 ### Local team memory
 
-Requirements: Python 3.11+ and the pinned Memkeeper v0.5.3 binary. Memkeeper
-is dual-licensed MIT/Apache-2.0. Install it from its tagged release, verify the
-release checksum, and make `memkeeper` available on `PATH`.
+Requirements for standalone Sidecaravan are Python 3.11+ and the pinned
+Memkeeper v0.5.3 binary. Memkeeper is dual-licensed MIT/Apache-2.0. Install it
+from its tagged release, verify the release checksum, and make `memkeeper`
+available on `PATH`. Aggregare deployments provision this binary through the
+`sidecaravan_memory` Ansible role; the standalone CLI does not.
 
 From a checkout, install Sidecaravan in an isolated environment:
 
@@ -57,12 +59,33 @@ scv restore ./team.sqlite.backup --force
 python -m pytest
 ```
 
+### Real Memkeeper verification
+
+The fake-backed tests verify Sidecaravan's argument forwarding. The
+disposable integration check below exercises the real pinned Memkeeper v0.5.3
+through separate CLI processes and covers initialization, provenance,
+bounded search/read, correction and supersession, tombstone forget, token
+rejection, repeat initialization, and backup/restore:
+
+```sh
+python scripts/real_memkeeper_lifecycle.py
+```
+
+It requires the verified `memkeeper` v0.5.3 binary on `PATH`; use
+`--memkeeper /path/to/memkeeper` for another location. The check does not
+download the binary or semantic models. Local outcome for this checkout on
+2026-11-08: passed against Aggregare's installed v0.5.3 release binary on the
+Ubuntu x86_64 VM. Known unsupported behavior remains concurrent-writer
+certification; lexical search is the supported no-model fallback.
+
 The adapter uses Memkeeper's lexical retrieval by default and has no LLM,
 embedding service, or additional database dependency. Concurrent writers have
 not been certified for this milestone; use one writer at a time until that
 behavior is tested.
 
-The intended first milestone is durable, reusable agent memory with explicit retrieval and correction. Until implementation lands, applications should not assume Sidecaravan exposes usable tools or APIs.
+The intended first milestone is durable, reusable agent memory with explicit
+retrieval and correction. That local CLI is implemented; agent-facing tools and
+APIs beyond the CLI remain future work.
 
 
 > **Give agents more to work with—and less they have to figure out from scratch.**
@@ -82,10 +105,9 @@ coding agent, a terminal assistant, or a tool that answers a question and gets
 out of the way. They should all be able to use the capabilities that help them.
 Nobody should have to adopt an entire ecosystem to benefit from one good tool.
 
-**Status: planning and initial development.** This README describes the vision,
-not a catalog of shipped features. The first implementation priority is durable
-agent memory that can be used across compatible assistants. There is no released
-Sidecaravan CLI to install yet. The planned command name is `scv`.
+**Status: initial development.** This README describes both the shipped local
+memory CLI and the wider vision. The CLI command is `scv`; integrations for
+compatible assistants and the remaining capability areas are not shipped yet.
 
 ## Give the agent a better starting point
 
