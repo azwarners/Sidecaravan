@@ -9,6 +9,8 @@ from pathlib import Path
 from .config import Config
 from .errors import ScvError
 from .memkeeper import Memkeeper
+from .capabilities import catalog
+from .mcp import serve
 
 
 def parser() -> argparse.ArgumentParser:
@@ -41,6 +43,8 @@ def parser() -> argparse.ArgumentParser:
     restore = sub.add_parser("restore")
     restore.add_argument("backup", type=Path)
     restore.add_argument("--force", action="store_true")
+    sub.add_parser("capabilities", help="list available capability descriptions")
+    sub.add_parser("mcp", help="serve memory tools over MCP stdio")
     return p
 
 
@@ -56,6 +60,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     config = Config.from_env()
     try:
+        if args.command == "capabilities":
+            emit({"capabilities": catalog()})
+            return 0
+        if args.command == "mcp":
+            serve(config)
+            return 0
         if args.command == "init":
             token = config.initialize()
             Memkeeper(config).init()

@@ -69,6 +69,7 @@ rejection, repeat initialization, and backup/restore:
 
 ```sh
 python scripts/real_memkeeper_lifecycle.py
+python scripts/mcp_lifecycle.py
 ```
 
 It requires the verified `memkeeper` v0.5.3 binary on `PATH`; use
@@ -84,8 +85,28 @@ not been certified for this milestone; use one writer at a time until that
 behavior is tested.
 
 The intended first milestone is durable, reusable agent memory with explicit
-retrieval and correction. That local CLI is implemented; agent-facing tools and
-APIs beyond the CLI remain future work.
+retrieval and correction. That local CLI is implemented; the external MCP
+boundary below provides the first agent-facing interface.
+
+### External agent boundary (MCP)
+
+The package exposes the memory capability through a newline-delimited JSON-RPC
+MCP server. It advertises only implemented `scv.memory` operations and
+requires the team token on every tool invocation; tool discovery is not
+authorization:
+
+```sh
+scv mcp
+# or: scv-mcp
+```
+
+Use `scv capabilities` to inspect the versioned capability catalog. MCP
+clients call `scv.memory.save`, `scv.memory.recall`, `scv.memory.read`,
+`scv.memory.correct`, and `scv.memory.forget`, passing `auth_token` in
+each call's arguments. The server returns structured tool errors for denied
+access, unknown tools, invalid limits, and Memkeeper failures. Since MCP has
+no portable caller-identity field, the explicit token is the authorization
+context for this initial local boundary.
 
 
 > **Give agents more to work with—and less they have to figure out from scratch.**
